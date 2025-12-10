@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - AdminPro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Theme variables */
+        :root {
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-card: rgba(96, 165, 250, 0.1);
+            --bg-hover: rgba(96, 165, 250, 0.05);
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --border-color: rgba(96, 165, 250, 0.2);
+            --shadow-color: rgba(96, 165, 250, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #F8FAFC;
+            --bg-secondary: #FFFFFF;
+            --bg-card: rgba(96, 165, 250, 0.05);
+            --bg-hover: rgba(96, 165, 250, 0.1);
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --border-color: rgba(96, 165, 250, 0.3);
+            --shadow-color: rgba(96, 165, 250, 0.2);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(96, 165, 250, 0.6);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .animate-fade-in-down {
+            animation: fadeInDown 0.6s ease-out forwards;
+        }
+
+        .animate-slide-in-left {
+            animation: slideInLeft 0.6s ease-out forwards;
+        }
+
+        .animate-slide-in-right {
+            animation: slideInRight 0.6s ease-out forwards;
+        }
+
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .animate-rotate {
+            animation: rotate 20s linear infinite;
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-600 { animation-delay: 0.6s; }
+        .delay-700 { animation-delay: 0.7s; }
+        .delay-800 { animation-delay: 0.8s; }
+
+        /* Gradient backgrounds */
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #60A5FA 0%, #3B82F6 100%);
+        }
+
+        .bg-gradient-dark {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            transition: background 0.3s ease;
+        }
+
+        .bg-gradient-card {
+            background: var(--bg-card);
+            transition: background 0.3s ease;
+        }
+
+        .theme-bg-secondary {
+            background-color: var(--bg-secondary);
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-border {
+            border-color: var(--border-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .theme-text-primary {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .theme-text-secondary {
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #60A5FA;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3B82F6;
+        }
+
+        /* Theme toggle animation */
+        .theme-toggle-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(96, 165, 250, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .theme-toggle-btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Floating shapes */
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #60A5FA, #3B82F6);
+            top: -150px;
+            right: -150px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #3B82F6, #1E40AF);
+            bottom: -100px;
+            left: -100px;
+            animation: float 8s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #60A5FA, #3B82F6);
+            top: 50%;
+            right: 10%;
+            animation: float 10s ease-in-out infinite;
+            animation-delay: 2s;
+        }
+
+        /* Input focus animation */
+        .input-field {
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px var(--shadow-color);
+        }
+
+        /* Button hover effect */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(96, 165, 250, 0.5);
+        }
+
+        /* Social button hover */
+        .social-btn {
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px var(--shadow-color);
+        }
+
+        /* Progress indicator */
+        .progress-step {
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            background: #60A5FA;
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: #10B981;
+            color: white;
+        }
+    </style>
+</head>
+<body class="font-sans min-h-screen flex items-start py-4 sm:py-8 lg:py-12 relative overflow-y-auto" style="background-color: var(--bg-primary); color: var(--text-primary);">
+    
+    <!-- Floating Shapes Background -->
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+
+    <!-- Theme Toggle Button (Top Right) -->
+    <button id="themeToggle" class="theme-toggle-btn fixed top-6 right-6 p-3 theme-bg-secondary rounded-lg hover:bg-blue-400/10 transition-all duration-300 z-50 animate-fade-in-down">
+        <i class="fas fa-sun text-blue-400 text-xl" id="lightIcon"></i>
+        <i class="fas fa-moon text-blue-400 text-xl hidden" id="darkIcon"></i>
+    </button>
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-4 sm:py-6 lg:py-8 z-10 w-full">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+                
+                <!-- Left Side - Branding & Info -->
+                <div class="hidden lg:block animate-slide-in-left">
+                    <div class="text-center lg:text-left max-w-lg">
+                        <!-- Logo -->
+                        <div class="flex items-center justify-center lg:justify-start space-x-3 mb-6 lg:mb-8">
+                            <div class="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-primary rounded-2xl flex items-center justify-center animate-pulse-glow">
+                                <i class="fas fa-crown text-white text-2xl lg:text-3xl"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-3xl lg:text-4xl font-bold text-blue-400">AdminPro</h1>
+                                <p class="text-xs lg:text-sm theme-text-secondary">Dashboard v2.0</p>
+                            </div>
+                        </div>
+
+                        <!-- Welcome Text -->
+                        <h2 class="text-3xl lg:text-4xl font-bold theme-text-primary mb-3 lg:mb-4">Join Us Today!</h2>
+                        <p class="text-base lg:text-lg theme-text-secondary mb-6 lg:mb-8">Create your account and start managing your business like a pro.</p>
+
+                        <!-- Benefits List -->
+                        <div class="space-y-3 lg:space-y-4">
+                            <div class="flex items-center space-x-3 lg:space-x-4 animate-fade-in-up delay-100">
+                                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-400/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-rocket text-blue-400 text-lg lg:text-xl"></i>
+                                </div>
+                                <div class="text-left">
+                                    <h3 class="font-semibold theme-text-primary text-sm lg:text-base">Quick Setup</h3>
+                                    <p class="text-xs lg:text-sm theme-text-secondary">Get started in less than 5 minutes</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-3 lg:space-x-4 animate-fade-in-up delay-200">
+                                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-infinity text-blue-500 text-lg lg:text-xl"></i>
+                                </div>
+                                <div class="text-left">
+                                    <h3 class="font-semibold theme-text-primary text-sm lg:text-base">Unlimited Access</h3>
+                                    <p class="text-xs lg:text-sm theme-text-secondary">Full features with no restrictions</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-3 lg:space-x-4 animate-fade-in-up delay-300">
+                                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-headset text-blue-600 text-lg lg:text-xl"></i>
+                                </div>
+                                <div class="text-left">
+                                    <h3 class="font-semibold theme-text-primary text-sm lg:text-base">24/7 Support</h3>
+                                    <p class="text-xs lg:text-sm theme-text-secondary">We're here to help anytime</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-3 lg:space-x-4 animate-fade-in-up delay-400">
+                                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-400/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-shield-alt text-blue-400 text-lg lg:text-xl"></i>
+                                </div>
+                                <div class="text-left">
+                                    <h3 class="font-semibold theme-text-primary text-sm lg:text-base">Secure & Private</h3>
+                                    <p class="text-xs lg:text-sm theme-text-secondary">Your data is always protected</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="grid grid-cols-3 gap-3 lg:gap-4 mt-8 lg:mt-12 animate-fade-in-up delay-500">
+                            <div class="text-center">
+                                <div class="text-2xl lg:text-3xl font-bold text-blue-400 mb-1">10K+</div>
+                                <div class="text-xs lg:text-sm theme-text-secondary">Active Users</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl lg:text-3xl font-bold text-blue-400 mb-1">4.9</div>
+                                <div class="text-xs lg:text-sm theme-text-secondary">Rating</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl lg:text-3xl font-bold text-blue-400 mb-1">99%</div>
+                                <div class="text-xs lg:text-sm theme-text-secondary">Satisfaction</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Signup Form -->
+                <div class="animate-slide-in-right w-full">
+                    <div class="bg-gradient-card backdrop-blur-sm theme-border border rounded-2xl p-6 sm:p-8 lg:p-10 shadow-2xl max-w-2xl mx-auto lg:mx-0 w-full">
+                        
+                        <!-- Mobile Logo -->
+                        <div class="lg:hidden flex items-center justify-center space-x-3 mb-4 sm:mb-6 animate-fade-in-down">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-primary rounded-xl flex items-center justify-center animate-pulse-glow">
+                                <i class="fas fa-crown text-white text-lg sm:text-xl"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-xl sm:text-2xl font-bold text-blue-400">AdminPro</h1>
+                                <p class="text-xs theme-text-secondary">Dashboard v2.0</p>
+                            </div>
+                        </div>
+
+                        <!-- Form Header -->
+                        <div class="text-center mb-4 sm:mb-6 lg:mb-8 animate-fade-in-up">
+                            <h2 class="text-2xl sm:text-3xl font-bold theme-text-primary mb-2">Create Account</h2>
+                            <p class="theme-text-secondary text-sm sm:text-base">Fill in your details to get started</p>
+                        </div>
+
+                        <!-- Signup Form -->
+                        <form id="signupForm" class="space-y-3 sm:space-y-4 lg:space-y-5">
+                            
+                            <!-- Name Fields -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 animate-fade-in-up delay-100">
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium theme-text-primary mb-1.5">
+                                        <i class="fas fa-user mr-1 sm:mr-2 text-blue-400"></i>First Name
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="firstName"
+                                        placeholder="John" 
+                                        class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary text-sm sm:text-base"
+                                        required
+                                    >
+                                </div>
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium theme-text-primary mb-1.5">
+                                        <i class="fas fa-user mr-1 sm:mr-2 text-blue-400"></i>Last Name
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="lastName"
+                                        placeholder="Doe" 
+                                        class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary text-sm sm:text-base"
+                                        required
+                                    >
+                                </div>
+                            </div>
+
+                            <!-- Email Input -->
+                            <div class="animate-fade-in-up delay-200">
+                                <label class="block text-xs sm:text-sm font-medium theme-text-primary mb-1.5">
+                                    <i class="fas fa-envelope mr-1 sm:mr-2 text-blue-400"></i>Email Address
+                                </label>
+                                <input 
+                                    type="email" 
+                                    id="email"
+                                    placeholder="john.doe@example.com" 
+                                    class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary text-sm sm:text-base"
+                                    required
+                                >
+                            </div>
+
+                            <!-- Phone Input -->
+                            <div class="animate-fade-in-up delay-300">
+                                <label class="block text-xs sm:text-sm font-medium theme-text-primary mb-1.5">
+                                    <i class="fas fa-phone mr-1 sm:mr-2 text-blue-400"></i>Phone Number
+                                </label>
+                                <input 
+                                    type="tel" 
+                                    id="phone"
+                                    placeholder="+62 812 3456 7890" 
+                                    class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary text-sm sm:text-base"
+                                    required
+                                >
+                            </div>
+
+                            <!-- Password Input -->
+                            <div class="animate-fade-in-up delay-400">
+                                <label class="block text-xs sm:text-sm font-medium theme-text-primary mb-1.5">
+                                    <i class="fas fa-lock mr-1 sm:mr-2 text-blue-400"></i>Password
+                                </label>
+                                <div class="relative">
+                                    <input 
+                                        type="password" 
+                                        id="password"
+                                        placeholder="Create a strong password" 
+                                        class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary pr-10 sm:pr-12 text-sm sm:text-base"
+                                        required
+                                    >
+                                    <button 
+                                        type="button"
+                                        id="togglePassword"
+                                        class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 theme-text-secondary hover:text-blue-400 transition-colors"
+                                    >
+                                        <i class="fas fa-eye text-sm sm:text-base" id="eyeIcon"></i>
+                                    </button>
+                                </div>
+                                <!-- Password Strength Indicator -->
+                                <div class="mt-1.5 flex space-x-1">
+                                    <div id="strength1" class="h-1 flex-1 rounded-full bg-gray-300"></div>
+                                    <div id="strength2" class="h-1 flex-1 rounded-full bg-gray-300"></div>
+                                    <div id="strength3" class="h-1 flex-1 rounded-full bg-gray-300"></div>
+                                    <div id="strength4" class="h-1 flex-1 rounded-full bg-gray-300"></div>
+                                </div>
+                                <p id="strengthText" class="text-xs theme-text-secondary mt-1">Password strength</p>
+                            </div>
+
+                            <!-- Confirm Password Input -->
+                            <div class="animate-fade-in-up delay-500">
+                                <label class="block text-xs sm:text-sm font-medium theme-text-primary mb-1.5">
+                                    <i class="fas fa-lock mr-1 sm:mr-2 text-blue-400"></i>Confirm Password
+                                </label>
+                                <input 
+                                    type="password" 
+                                    id="confirmPassword"
+                                    placeholder="Re-enter your password" 
+                                    class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary text-sm sm:text-base"
+                                    required
+                                >
+                            </div>
+
+                            <!-- Terms & Conditions -->
+                            <div class="flex items-start space-x-2 animate-fade-in-up delay-600">
+                                <input 
+                                    type="checkbox" 
+                                    id="terms"
+                                    class="w-4 h-4 mt-0.5 rounded border-2 theme-border bg-transparent checked:bg-blue-400 checked:border-blue-400 transition-all cursor-pointer flex-shrink-0"
+                                    required
+                                >
+                                <label for="terms" class="text-xs sm:text-sm theme-text-secondary">
+                                    I agree to the 
+                                    <a href="#" class="text-blue-400 hover:text-blue-300">Terms of Service</a> 
+                                    and 
+                                    <a href="#" class="text-blue-400 hover:text-blue-300">Privacy Policy</a>
+                                </label>
+                            </div>
+
+                            <!-- Signup Button -->
+                            <button 
+                                type="submit"
+                                class="btn-primary w-full py-2.5 bg-gradient-primary text-white font-semibold rounded-lg transition-all duration-300 animate-fade-in-up delay-700 relative text-sm sm:text-base"
+                            >
+                                <span class="relative z-10 flex items-center justify-center">
+                                    <i class="fas fa-user-plus mr-2"></i>
+                                    Create Account
+                                </span>
+                            </button>
+
+                            <!-- Divider -->
+                            <div class="relative animate-fade-in-up delay-800">
+                                <div class="absolute inset-0 flex items-center">
+                                    <div class="w-full border-t theme-border"></div>
+                                </div>
+                                <div class="relative flex justify-center text-xs sm:text-sm">
+                                    <span class="px-4 theme-bg-secondary theme-text-secondary">Or sign up with</span>
+                                </div>
+                            </div>
+
+                            <!-- Social Signup Buttons -->
+                            <div class="grid grid-cols-2 gap-3 animate-fade-in-up delay-900">
+                                <button 
+                                    type="button"
+                                    class="social-btn py-2.5 theme-bg-secondary theme-border border rounded-lg hover:border-blue-400 transition-all duration-300 flex items-center justify-center space-x-2"
+                                >
+                                    <i class="fab fa-google text-red-500 text-lg sm:text-xl"></i>
+                                    <span class="theme-text-primary font-medium text-sm hidden sm:inline">Google</span>
+                                </button>
+                                <button 
+                                    type="button"
+                                    class="social-btn py-2.5 theme-bg-secondary theme-border border rounded-lg hover:border-blue-400 transition-all duration-300 flex items-center justify-center space-x-2"
+                                >
+                                    <i class="fab fa-facebook text-blue-600 text-lg sm:text-xl"></i>
+                                    <span class="theme-text-primary font-medium text-sm hidden sm:inline">Facebook</span>
+                                </button>
+                            </div>
+
+                            <!-- Login Link -->
+                            <p class="text-center theme-text-secondary text-xs sm:text-sm animate-fade-in-up" style="animation-delay: 1s;">
+                                Already have an account? 
+                                <a href="login-page.html" class="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
+                                    Log in here
+                                </a>
+                            </p>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const lightIcon = document.getElementById('lightIcon');
+        const darkIcon = document.getElementById('darkIcon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to 'dark'
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', currentTheme);
+        
+        // Update icon based on current theme
+        if (currentTheme === 'light') {
+            lightIcon.classList.add('hidden');
+            darkIcon.classList.remove('hidden');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Toggle icons with animation
+            if (newTheme === 'light') {
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+            } else {
+                darkIcon.classList.add('hidden');
+                lightIcon.classList.remove('hidden');
+            }
+        });
+
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Toggle eye icon
+            if (type === 'text') {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        });
+
+        // Password strength checker
+        const password = document.getElementById('password');
+        const strength1 = document.getElementById('strength1');
+        const strength2 = document.getElementById('strength2');
+        const strength3 = document.getElementById('strength3');
+        const strength4 = document.getElementById('strength4');
+        const strengthText = document.getElementById('strengthText');
+
+        password.addEventListener('input', (e) => {
+            const value = e.target.value;
+            let strength = 0;
+
+            // Reset
+            [strength1, strength2, strength3, strength4].forEach(el => {
+                el.style.background = '#D1D5DB';
+            });
+
+            if (value.length >= 6) strength++;
+            if (value.length >= 10) strength++;
+            if (/[A-Z]/.test(value) && /[a-z]/.test(value)) strength++;
+            if (/[0-9]/.test(value) && /[^A-Za-z0-9]/.test(value)) strength++;
+
+            // Update strength bars
+            if (strength >= 1) {
+                strength1.style.background = '#EF4444';
+                strengthText.textContent = 'Weak password';
+                strengthText.style.color = '#EF4444';
+            }
+            if (strength >= 2) {
+                strength2.style.background = '#F59E0B';
+                strengthText.textContent = 'Fair password';
+                strengthText.style.color = '#F59E0B';
+            }
+            if (strength >= 3) {
+                strength3.style.background = '#10B981';
+                strengthText.textContent = 'Good password';
+                strengthText.style.color = '#10B981';
+            }
+            if (strength >= 4) {
+                strength4.style.background = '#10B981';
+                strengthText.textContent = 'Strong password';
+                strengthText.style.color = '#10B981';
+            }
+
+            if (value.length === 0) {
+                strengthText.textContent = 'Password strength';
+                strengthText.style.color = '';
+            }
+        });
+
+        // Form submission
+        const signupForm = document.getElementById('signupForm');
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            // Validate terms
+            if (!terms) {
+                alert('Please accept the Terms of Service and Privacy Policy');
+                return;
+            }
+
+            // Show loading animation
+            const submitBtn = signupForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating account...';
+            submitBtn.disabled = true;
+
+            // Simulate signup (replace with actual API call)
+            setTimeout(() => {
+                console.log('Signup attempt:', { firstName, lastName, email, phone, password, terms });
+                
+                // Success animation
+                submitBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Account created! Redirecting...';
+                submitBtn.classList.add('bg-green-500');
+                
+                // Redirect to login or dashboard after 1.5 seconds
+                setTimeout(() => {
+                    window.location.href = 'login-page.html';
+                }, 1500);
+            }, 1500);
+        });
+
+        // Add floating animation to form inputs on focus
+        const inputs = document.querySelectorAll('.input-field');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('animate-pulse-glow');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('animate-pulse-glow');
+            });
+        });
+
+        // Add particle effect on button hover
+        const btnPrimary = document.querySelector('.btn-primary');
+        btnPrimary.addEventListener('mouseenter', function() {
+            this.style.boxShadow = '0 15px 30px rgba(96, 165, 250, 0.5)';
+        });
+
+        btnPrimary.addEventListener('mouseleave', function() {
+            this.style.boxShadow = '';
+        });
+    </script>
+
+</body>
+</html>
