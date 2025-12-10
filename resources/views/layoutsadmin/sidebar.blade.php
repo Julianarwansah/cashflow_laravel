@@ -25,11 +25,13 @@
             <i class="fas fa-exchange-alt text-lg"></i>
             <span class="font-medium">Transaksi</span>
         </a>
-        <a href="{{ route('admin.users.index') }}"
-            class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 {{ request()->routeIs('admin.users*') ? 'bg-gradient-primary text-white' : 'theme-text-secondary hover:bg-blue-400/10 hover:text-blue-400' }} animate-slide-in-left delay-300">
-            <i class="fas fa-users text-lg"></i>
-            <span class="font-medium">Users</span>
-        </a>
+        @if(auth()->user()->role === 'admin')
+            <a href="{{ route('admin.users.index') }}"
+                class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 {{ request()->routeIs('admin.users*') ? 'bg-gradient-primary text-white' : 'theme-text-secondary hover:bg-blue-400/10 hover:text-blue-400' }} animate-slide-in-left delay-300">
+                <i class="fas fa-users text-lg"></i>
+                <span class="font-medium">Users</span>
+            </a>
+        @endif
         <a href="{{ route('admin.kategori.index') }}"
             class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 {{ request()->routeIs('admin.kategori*') ? 'bg-gradient-primary text-white' : 'theme-text-secondary hover:bg-blue-400/10 hover:text-blue-400' }} animate-slide-in-left delay-400">
             <i class="fas fa-tags text-lg"></i>

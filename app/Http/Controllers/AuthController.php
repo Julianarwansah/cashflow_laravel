@@ -44,6 +44,7 @@ class AuthController extends Controller
                     'email' => $firebaseUser->email,
                     'photo' => $firebaseUser->photoUrl,
                     'provider' => $firebaseUser->providerData[0]->providerId ?? 'password',
+                    'role' => 'user', // Default role
                 ]
             );
 

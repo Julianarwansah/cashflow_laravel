@@ -35,6 +35,7 @@
                         <tr class="border-b theme-border text-left">
                             <th class="py-3 px-4 font-semibold text-sm theme-text-secondary">User</th>
                             <th class="py-3 px-4 font-semibold text-sm theme-text-secondary">Email</th>
+                            <th class="py-3 px-4 font-semibold text-sm theme-text-secondary">Role</th>
                             <th class="py-3 px-4 font-semibold text-sm theme-text-secondary">Provider</th>
                             <th class="py-3 px-4 font-semibold text-sm theme-text-secondary">Bergabung</th>
                             <th class="py-3 px-4 font-semibold text-sm theme-text-secondary">Aksi</th>
@@ -51,6 +52,13 @@
                                     </div>
                                 </td>
                                 <td class="py-3 px-4 text-sm theme-text-secondary">{{ $user->email }}</td>
+                                <td class="py-3 px-4">
+                                    @if($user->role == 'admin')
+                                        <span class="bg-purple-500/10 text-purple-500 px-2 py-1 rounded-full text-xs font-semibold">Admin</span>
+                                    @else
+                                        <span class="bg-gray-500/10 theme-text-secondary px-2 py-1 rounded-full text-xs font-semibold">User</span>
+                                    @endif
+                                </td>
                                 <td class="py-3 px-4">
                                     @if($user->provider == 'google.com')
                                         <span
@@ -70,23 +78,27 @@
                                     {{ $user->created_at->format('d M Y') }}
                                 </td>
                                 <td class="py-3 px-4">
-                                    @if($user->id !== auth()->id())
-                                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
-                                            onsubmit="return confirm('Hapus user ini? Data tidak bisa dikembalikan.');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-500 hover:text-red-400 p-1" title="Hapus User">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    @else
-                                        <span class="text-xs text-green-500">Anda</span>
-                                    @endif
+                                    <div class="flex space-x-2">
+                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="text-blue-400 hover:text-blue-300 p-1" title="Edit / Ganti Role">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        @if($user->id !== auth()->id())
+                                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Hapus user ini? Data tidak bisa dikembalikan.');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-500 hover:text-red-400 p-1" title="Hapus User">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <span class="text-xs text-green-500">Anda</span>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="py-8 text-center theme-text-secondary">
+                                <td colspan="6" class="py-8 text-center theme-text-secondary">
                                     Belum ada user terdaftar.
                                 </td>
                             </tr>
