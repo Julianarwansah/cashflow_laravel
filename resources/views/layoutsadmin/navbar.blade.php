@@ -37,10 +37,71 @@
                     class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center animate-pulse text-white">3</span>
             </button>
 
-            <button
-                class="p-2 theme-bg-secondary rounded-lg hover:bg-blue-400/10 transition-all duration-300 hidden sm:block">
-                <i class="fas fa-envelope text-blue-400 text-lg"></i>
-            </button>
+            <!-- Profile Dropdown -->
+            <div class="relative">
+                <button id="profileDropdownBtn"
+                    class="flex items-center space-x-2 p-2 theme-bg-secondary rounded-lg hover:bg-blue-400/10 transition-all duration-300">
+                    <img src="{{ Auth::user()->photo ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&color=7F9CF5&background=EBF4FF' }}"
+                        alt="Profile" class="w-8 h-8 rounded-full border-2 border-blue-400">
+                    <span class="theme-text-primary font-medium hidden sm:block">{{ Auth::user()->name }}</span>
+                    <i class="fas fa-chevron-down text-xs theme-text-secondary hidden sm:block"></i>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div id="profileDropdownMenu"
+                    class="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-xl py-2 opacity-0 invisible transform scale-95 transition-all duration-200 origin-top-right z-50 theme-border border">
+                    <div class="px-4 py-2 border-b theme-border">
+                        <p class="text-sm font-semibold theme-text-primary text-truncate">{{ Auth::user()->name }}</p>
+                        <p class="text-xs theme-text-secondary text-truncate">{{ Auth::user()->email }}</p>
+                    </div>
+
+                    <a href="{{ route('admin.profile') }}"
+                        class="block px-4 py-2 text-sm theme-text-secondary hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:text-blue-400 transition-colors">
+                        <i class="fas fa-user mr-2"></i> My Profile
+                    </a>
+
+                    <div class="border-t theme-border my-1"></div>
+
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit"
+                            class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+                // Profile Dropdown Toggle
+                const profileBtn = document.getElementById('profileDropdownBtn');
+                const profileMenu = document.getElementById('profileDropdownMenu');
+
+                if (profileBtn && profileMenu) {
+                    profileBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const isHidden = profileMenu.classList.contains('invisible');
+
+                        if (isHidden) {
+                            // Show
+                            profileMenu.classList.remove('invisible', 'opacity-0', 'scale-95');
+                            profileMenu.classList.add('opacity-100', 'scale-100');
+                        } else {
+                            // Hide
+                            profileMenu.classList.add('invisible', 'opacity-0', 'scale-95');
+                            profileMenu.classList.remove('opacity-100', 'scale-100');
+                        }
+                    });
+
+                    // Close when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                            profileMenu.classList.add('invisible', 'opacity-0', 'scale-95');
+                            profileMenu.classList.remove('opacity-100', 'scale-100');
+                        }
+                    });
+                }
+            </script>
         </div>
     </div>
 </header>

@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - AdminPro</title>
+    <title>Sign Up - CashFlow Mandiri</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    </script>
     <style>
         /* Theme variables */
         :root {
@@ -41,6 +47,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -52,6 +59,7 @@
                 opacity: 0;
                 transform: translateY(-30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -63,6 +71,7 @@
                 opacity: 0;
                 transform: translateX(-50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -74,6 +83,7 @@
                 opacity: 0;
                 transform: translateX(50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -81,18 +91,24 @@
         }
 
         @keyframes pulse-glow {
-            0%, 100% {
+
+            0%,
+            100% {
                 box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
             }
+
             50% {
                 box-shadow: 0 0 40px rgba(96, 165, 250, 0.6);
             }
         }
 
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0px);
             }
+
             50% {
                 transform: translateY(-20px);
             }
@@ -102,6 +118,7 @@
             from {
                 transform: rotate(0deg);
             }
+
             to {
                 transform: rotate(360deg);
             }
@@ -111,6 +128,7 @@
             0% {
                 background-position: -1000px 0;
             }
+
             100% {
                 background-position: 1000px 0;
             }
@@ -144,14 +162,37 @@
             animation: rotate 20s linear infinite;
         }
 
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-        .delay-400 { animation-delay: 0.4s; }
-        .delay-500 { animation-delay: 0.5s; }
-        .delay-600 { animation-delay: 0.6s; }
-        .delay-700 { animation-delay: 0.7s; }
-        .delay-800 { animation-delay: 0.8s; }
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-400 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-500 {
+            animation-delay: 0.5s;
+        }
+
+        .delay-600 {
+            animation-delay: 0.6s;
+        }
+
+        .delay-700 {
+            animation-delay: 0.7s;
+        }
+
+        .delay-800 {
+            animation-delay: 0.8s;
+        }
 
         /* Gradient backgrounds */
         .bg-gradient-primary {
@@ -333,15 +374,18 @@
         }
     </style>
 </head>
-<body class="font-sans min-h-screen flex items-start py-4 sm:py-8 lg:py-12 relative overflow-y-auto" style="background-color: var(--bg-primary); color: var(--text-primary);">
-    
+
+<body class="font-sans min-h-screen flex items-start py-4 sm:py-8 lg:py-12 relative overflow-y-auto"
+    style="background-color: var(--bg-primary); color: var(--text-primary);">
+
     <!-- Floating Shapes Background -->
     <div class="floating-shape shape-1"></div>
     <div class="floating-shape shape-2"></div>
     <div class="floating-shape shape-3"></div>
 
     <!-- Theme Toggle Button (Top Right) -->
-    <button id="themeToggle" class="theme-toggle-btn fixed top-6 right-6 p-3 theme-bg-secondary rounded-lg hover:bg-blue-400/10 transition-all duration-300 z-50 animate-fade-in-down">
+    <button id="themeToggle"
+        class="theme-toggle-btn fixed top-6 right-6 p-3 theme-bg-secondary rounded-lg hover:bg-blue-400/10 transition-all duration-300 z-50 animate-fade-in-down">
         <i class="fas fa-sun text-blue-400 text-xl" id="lightIcon"></i>
         <i class="fas fa-moon text-blue-400 text-xl hidden" id="darkIcon"></i>
     </button>
@@ -350,49 +394,57 @@
     <div class="container mx-auto px-4 py-4 sm:py-6 lg:py-8 z-10 w-full">
         <div class="max-w-7xl mx-auto w-full">
             <div class="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-                
+
                 <!-- Left Side - Branding & Info -->
                 <div class="hidden lg:block animate-slide-in-left">
                     <div class="text-center lg:text-left max-w-lg">
                         <!-- Logo -->
                         <div class="flex items-center justify-center lg:justify-start space-x-3 mb-6 lg:mb-8">
-                            <div class="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-primary rounded-2xl flex items-center justify-center animate-pulse-glow">
+                            <div
+                                class="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-primary rounded-2xl flex items-center justify-center animate-pulse-glow">
                                 <i class="fas fa-crown text-white text-2xl lg:text-3xl"></i>
                             </div>
                             <div>
-                                <h1 class="text-3xl lg:text-4xl font-bold text-blue-400">AdminPro</h1>
-                                <p class="text-xs lg:text-sm theme-text-secondary">Dashboard v2.0</p>
+                                <h1 class="text-4xl font-bold text-blue-400">CashFlow Mandiri</h1>
+                                <p class="text-sm theme-text-secondary">Pencatatan Keuangan Pribadi</p>
                             </div>
                         </div>
 
                         <!-- Welcome Text -->
-                        <h2 class="text-3xl lg:text-4xl font-bold theme-text-primary mb-3 lg:mb-4">Join Us Today!</h2>
-                        <p class="text-base lg:text-lg theme-text-secondary mb-6 lg:mb-8">Create your account and start managing your business like a pro.</p>
+                        <h2 class="text-4xl font-bold theme-text-primary mb-6">Mulai Atur Keuanganmu</h2>
+                        <p class="text-lg theme-text-secondary mb-10">Bergabunglah dengan ribuan orang yang telah
+                            berhasil mencapai target finansial mereka melalui pencatatan yang disiplin.</p>
 
                         <!-- Benefits List -->
                         <div class="space-y-3 lg:space-y-4">
                             <div class="flex items-center space-x-3 lg:space-x-4 animate-fade-in-up delay-100">
-                                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-400/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <div
+                                    class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-400/20 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <i class="fas fa-rocket text-blue-400 text-lg lg:text-xl"></i>
                                 </div>
                                 <div class="text-left">
                                     <h3 class="font-semibold theme-text-primary text-sm lg:text-base">Quick Setup</h3>
-                                    <p class="text-xs lg:text-sm theme-text-secondary">Get started in less than 5 minutes</p>
+                                    <p class="text-xs lg:text-sm theme-text-secondary">Get started in less than 5
+                                        minutes</p>
                                 </div>
                             </div>
 
                             <div class="flex items-center space-x-3 lg:space-x-4 animate-fade-in-up delay-200">
-                                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <div
+                                    class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <i class="fas fa-infinity text-blue-500 text-lg lg:text-xl"></i>
                                 </div>
                                 <div class="text-left">
-                                    <h3 class="font-semibold theme-text-primary text-sm lg:text-base">Unlimited Access</h3>
-                                    <p class="text-xs lg:text-sm theme-text-secondary">Full features with no restrictions</p>
+                                    <h3 class="font-semibold theme-text-primary text-sm lg:text-base">Unlimited Access
+                                    </h3>
+                                    <p class="text-xs lg:text-sm theme-text-secondary">Full features with no
+                                        restrictions</p>
                                 </div>
                             </div>
 
                             <div class="flex items-center space-x-3 lg:space-x-4 animate-fade-in-up delay-300">
-                                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <div
+                                    class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <i class="fas fa-headset text-blue-600 text-lg lg:text-xl"></i>
                                 </div>
                                 <div class="text-left">
@@ -402,11 +454,13 @@
                             </div>
 
                             <div class="flex items-center space-x-3 lg:space-x-4 animate-fade-in-up delay-400">
-                                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-400/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <div
+                                    class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-400/20 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <i class="fas fa-shield-alt text-blue-400 text-lg lg:text-xl"></i>
                                 </div>
                                 <div class="text-left">
-                                    <h3 class="font-semibold theme-text-primary text-sm lg:text-base">Secure & Private</h3>
+                                    <h3 class="font-semibold theme-text-primary text-sm lg:text-base">Secure & Private
+                                    </h3>
                                     <p class="text-xs lg:text-sm theme-text-secondary">Your data is always protected</p>
                                 </div>
                             </div>
@@ -432,53 +486,49 @@
 
                 <!-- Right Side - Signup Form -->
                 <div class="animate-slide-in-right w-full">
-                    <div class="bg-gradient-card backdrop-blur-sm theme-border border rounded-2xl p-6 sm:p-8 lg:p-10 shadow-2xl max-w-2xl mx-auto lg:mx-0 w-full">
-                        
+                    <div
+                        class="bg-gradient-card backdrop-blur-sm theme-border border rounded-2xl p-6 sm:p-8 lg:p-10 shadow-2xl max-w-2xl mx-auto lg:mx-0 w-full">
+
                         <!-- Mobile Logo -->
-                        <div class="lg:hidden flex items-center justify-center space-x-3 mb-4 sm:mb-6 animate-fade-in-down">
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-primary rounded-xl flex items-center justify-center animate-pulse-glow">
+                        <div
+                            class="lg:hidden flex items-center justify-center space-x-3 mb-4 sm:mb-6 animate-fade-in-down">
+                            <div
+                                class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-primary rounded-xl flex items-center justify-center animate-pulse-glow">
                                 <i class="fas fa-crown text-white text-lg sm:text-xl"></i>
                             </div>
                             <div>
-                                <h1 class="text-xl sm:text-2xl font-bold text-blue-400">AdminPro</h1>
-                                <p class="text-xs theme-text-secondary">Dashboard v2.0</p>
+                                <h1 class="text-xl sm:text-2xl font-bold text-blue-400">CashFlow</h1>
+                                <p class="text-xs theme-text-secondary">Pencatatan Pribadi</p>
                             </div>
                         </div>
 
                         <!-- Form Header -->
                         <div class="text-center mb-4 sm:mb-6 lg:mb-8 animate-fade-in-up">
-                            <h2 class="text-2xl sm:text-3xl font-bold theme-text-primary mb-2">Create Account</h2>
-                            <p class="theme-text-secondary text-sm sm:text-base">Fill in your details to get started</p>
+                            <h2 class="text-2xl sm:text-3xl font-bold theme-text-primary mb-2">Buat Akun Baru</h2>
+                            <p class="theme-text-secondary text-sm sm:text-base">Mulai perjalanan finansial Anda
+                                sekarang</p>
                         </div>
 
                         <!-- Signup Form -->
                         <form id="signupForm" class="space-y-3 sm:space-y-4 lg:space-y-5">
-                            
+
                             <!-- Name Fields -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 animate-fade-in-up delay-100">
                                 <div>
                                     <label class="block text-xs sm:text-sm font-medium theme-text-primary mb-1.5">
                                         <i class="fas fa-user mr-1 sm:mr-2 text-blue-400"></i>First Name
                                     </label>
-                                    <input 
-                                        type="text" 
-                                        id="firstName"
-                                        placeholder="John" 
+                                    <input type="text" id="firstName" placeholder="John"
                                         class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary text-sm sm:text-base"
-                                        required
-                                    >
+                                        required>
                                 </div>
                                 <div>
                                     <label class="block text-xs sm:text-sm font-medium theme-text-primary mb-1.5">
                                         <i class="fas fa-user mr-1 sm:mr-2 text-blue-400"></i>Last Name
                                     </label>
-                                    <input 
-                                        type="text" 
-                                        id="lastName"
-                                        placeholder="Doe" 
+                                    <input type="text" id="lastName" placeholder="Doe"
                                         class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary text-sm sm:text-base"
-                                        required
-                                    >
+                                        required>
                                 </div>
                             </div>
 
@@ -487,13 +537,9 @@
                                 <label class="block text-xs sm:text-sm font-medium theme-text-primary mb-1.5">
                                     <i class="fas fa-envelope mr-1 sm:mr-2 text-blue-400"></i>Email Address
                                 </label>
-                                <input 
-                                    type="email" 
-                                    id="email"
-                                    placeholder="john.doe@example.com" 
+                                <input type="email" id="email" placeholder="john.doe@example.com"
                                     class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary text-sm sm:text-base"
-                                    required
-                                >
+                                    required>
                             </div>
 
                             <!-- Phone Input -->
@@ -501,13 +547,9 @@
                                 <label class="block text-xs sm:text-sm font-medium theme-text-primary mb-1.5">
                                     <i class="fas fa-phone mr-1 sm:mr-2 text-blue-400"></i>Phone Number
                                 </label>
-                                <input 
-                                    type="tel" 
-                                    id="phone"
-                                    placeholder="+62 812 3456 7890" 
+                                <input type="tel" id="phone" placeholder="+62 812 3456 7890"
                                     class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary text-sm sm:text-base"
-                                    required
-                                >
+                                    required>
                             </div>
 
                             <!-- Password Input -->
@@ -516,18 +558,11 @@
                                     <i class="fas fa-lock mr-1 sm:mr-2 text-blue-400"></i>Password
                                 </label>
                                 <div class="relative">
-                                    <input 
-                                        type="password" 
-                                        id="password"
-                                        placeholder="Create a strong password" 
+                                    <input type="password" id="password" placeholder="Create a strong password"
                                         class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary pr-10 sm:pr-12 text-sm sm:text-base"
-                                        required
-                                    >
-                                    <button 
-                                        type="button"
-                                        id="togglePassword"
-                                        class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 theme-text-secondary hover:text-blue-400 transition-colors"
-                                    >
+                                        required>
+                                    <button type="button" id="togglePassword"
+                                        class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 theme-text-secondary hover:text-blue-400 transition-colors">
                                         <i class="fas fa-eye text-sm sm:text-base" id="eyeIcon"></i>
                                     </button>
                                 </div>
@@ -546,36 +581,27 @@
                                 <label class="block text-xs sm:text-sm font-medium theme-text-primary mb-1.5">
                                     <i class="fas fa-lock mr-1 sm:mr-2 text-blue-400"></i>Confirm Password
                                 </label>
-                                <input 
-                                    type="password" 
-                                    id="confirmPassword"
-                                    placeholder="Re-enter your password" 
+                                <input type="password" id="confirmPassword" placeholder="Re-enter your password"
                                     class="input-field w-full px-3 sm:px-4 py-2 sm:py-2.5 theme-bg-secondary theme-border border rounded-lg focus:outline-none focus:border-blue-400 theme-text-primary text-sm sm:text-base"
-                                    required
-                                >
+                                    required>
                             </div>
 
                             <!-- Terms & Conditions -->
                             <div class="flex items-start space-x-2 animate-fade-in-up delay-600">
-                                <input 
-                                    type="checkbox" 
-                                    id="terms"
+                                <input type="checkbox" id="terms"
                                     class="w-4 h-4 mt-0.5 rounded border-2 theme-border bg-transparent checked:bg-blue-400 checked:border-blue-400 transition-all cursor-pointer flex-shrink-0"
-                                    required
-                                >
+                                    required>
                                 <label for="terms" class="text-xs sm:text-sm theme-text-secondary">
-                                    I agree to the 
-                                    <a href="#" class="text-blue-400 hover:text-blue-300">Terms of Service</a> 
-                                    and 
+                                    I agree to the
+                                    <a href="#" class="text-blue-400 hover:text-blue-300">Terms of Service</a>
+                                    and
                                     <a href="#" class="text-blue-400 hover:text-blue-300">Privacy Policy</a>
                                 </label>
                             </div>
 
                             <!-- Signup Button -->
-                            <button 
-                                type="submit"
-                                class="btn-primary w-full py-2.5 bg-gradient-primary text-white font-semibold rounded-lg transition-all duration-300 animate-fade-in-up delay-700 relative text-sm sm:text-base"
-                            >
+                            <button type="submit"
+                                class="btn-primary w-full py-2.5 bg-gradient-primary text-white font-semibold rounded-lg transition-all duration-300 animate-fade-in-up delay-700 relative text-sm sm:text-base">
                                 <span class="relative z-10 flex items-center justify-center">
                                     <i class="fas fa-user-plus mr-2"></i>
                                     Create Account
@@ -594,26 +620,25 @@
 
                             <!-- Social Signup Buttons -->
                             <div class="grid grid-cols-2 gap-3 animate-fade-in-up delay-900">
-                                <button 
-                                    type="button"
-                                    class="social-btn py-2.5 theme-bg-secondary theme-border border rounded-lg hover:border-blue-400 transition-all duration-300 flex items-center justify-center space-x-2"
-                                >
+                                <button type="button"
+                                    class="social-btn py-2.5 theme-bg-secondary theme-border border rounded-lg hover:border-blue-400 transition-all duration-300 flex items-center justify-center space-x-2">
                                     <i class="fab fa-google text-red-500 text-lg sm:text-xl"></i>
                                     <span class="theme-text-primary font-medium text-sm hidden sm:inline">Google</span>
                                 </button>
-                                <button 
-                                    type="button"
-                                    class="social-btn py-2.5 theme-bg-secondary theme-border border rounded-lg hover:border-blue-400 transition-all duration-300 flex items-center justify-center space-x-2"
-                                >
+                                <button type="button"
+                                    class="social-btn py-2.5 theme-bg-secondary theme-border border rounded-lg hover:border-blue-400 transition-all duration-300 flex items-center justify-center space-x-2">
                                     <i class="fab fa-facebook text-blue-600 text-lg sm:text-xl"></i>
-                                    <span class="theme-text-primary font-medium text-sm hidden sm:inline">Facebook</span>
+                                    <span
+                                        class="theme-text-primary font-medium text-sm hidden sm:inline">Facebook</span>
                                 </button>
                             </div>
 
                             <!-- Login Link -->
-                            <p class="text-center theme-text-secondary text-xs sm:text-sm animate-fade-in-up" style="animation-delay: 1s;">
-                                Already have an account? 
-                                <a href="login-page.html" class="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
+                            <p class="text-center theme-text-secondary text-xs sm:text-sm animate-fade-in-up"
+                                style="animation-delay: 1s;">
+                                Already have an account?
+                                <a href="{{ route('login') }}"
+                                    class="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
                                     Log in here
                                 </a>
                             </p>
@@ -627,7 +652,26 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        // REPLACE THIS WITH YOUR CONFIGURATION FROM FIREBASE CONSOLE
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZVYNI58Fx5L5QJgguotmT9uM7xxL38i4",
+            authDomain: "uas-cashflow-app.firebaseapp.com",
+            projectId: "uas-cashflow-app",
+            storageBucket: "uas-cashflow-app.firebasestorage.app",
+            messagingSenderId: "712776728248",
+            appId: "1:712776728248:web:a19dad716ce9d2d7607e4d",
+            measurementId: "G-3JZ5B8LJ0Y"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
         // Theme toggle functionality
         const themeToggle = document.getElementById('themeToggle');
         const lightIcon = document.getElementById('lightIcon');
@@ -637,7 +681,7 @@
         // Check for saved theme preference or default to 'dark'
         const currentTheme = localStorage.getItem('theme') || 'dark';
         html.setAttribute('data-theme', currentTheme);
-        
+
         // Update icon based on current theme
         if (currentTheme === 'light') {
             lightIcon.classList.add('hidden');
@@ -647,10 +691,10 @@
         themeToggle.addEventListener('click', () => {
             const currentTheme = html.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
+
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
-            
+
             // Toggle icons with animation
             if (newTheme === 'light') {
                 lightIcon.classList.add('hidden');
@@ -665,20 +709,21 @@
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
         const eyeIcon = document.getElementById('eyeIcon');
+        if (togglePassword) {
+            togglePassword.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
 
-        togglePassword.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            
-            // Toggle eye icon
-            if (type === 'text') {
-                eyeIcon.classList.remove('fa-eye');
-                eyeIcon.classList.add('fa-eye-slash');
-            } else {
-                eyeIcon.classList.remove('fa-eye-slash');
-                eyeIcon.classList.add('fa-eye');
-            }
-        });
+                // Toggle eye icon
+                if (type === 'text') {
+                    eyeIcon.classList.remove('fa-eye');
+                    eyeIcon.classList.add('fa-eye-slash');
+                } else {
+                    eyeIcon.classList.remove('fa-eye-slash');
+                    eyeIcon.classList.add('fa-eye');
+                }
+            });
+        }
 
         // Password strength checker
         const password = document.getElementById('password');
@@ -688,116 +733,186 @@
         const strength4 = document.getElementById('strength4');
         const strengthText = document.getElementById('strengthText');
 
-        password.addEventListener('input', (e) => {
-            const value = e.target.value;
-            let strength = 0;
+        if (password) {
+            password.addEventListener('input', (e) => {
+                const value = e.target.value;
+                let strength = 0;
 
-            // Reset
-            [strength1, strength2, strength3, strength4].forEach(el => {
-                el.style.background = '#D1D5DB';
+                // Reset
+                [strength1, strength2, strength3, strength4].forEach(el => {
+                    if (el) el.style.background = '#D1D5DB';
+                });
+
+                if (value.length >= 6) strength++;
+                if (value.length >= 10) strength++;
+                if (/[A-Z]/.test(value) && /[a-z]/.test(value)) strength++;
+                if (/[0-9]/.test(value) && /[^A-Za-z0-9]/.test(value)) strength++;
+
+                // Update strength bars
+                if (strength >= 1 && strength1) {
+                    strength1.style.background = '#EF4444';
+                    strengthText.textContent = 'Weak password';
+                    strengthText.style.color = '#EF4444';
+                }
+                if (strength >= 2 && strength2) {
+                    strength2.style.background = '#F59E0B';
+                    strengthText.textContent = 'Fair password';
+                    strengthText.style.color = '#F59E0B';
+                }
+                if (strength >= 3 && strength3) {
+                    strength3.style.background = '#10B981';
+                    strengthText.textContent = 'Good password';
+                    strengthText.style.color = '#10B981';
+                }
+                if (strength >= 4 && strength4) {
+                    strength4.style.background = '#10B981';
+                    strengthText.textContent = 'Strong password';
+                    strengthText.style.color = '#10B981';
+                }
+
+                if (value.length === 0 && strengthText) {
+                    strengthText.textContent = 'Password strength';
+                    strengthText.style.color = '';
+                }
             });
+        }
 
-            if (value.length >= 6) strength++;
-            if (value.length >= 10) strength++;
-            if (/[A-Z]/.test(value) && /[a-z]/.test(value)) strength++;
-            if (/[0-9]/.test(value) && /[^A-Za-z0-9]/.test(value)) strength++;
-
-            // Update strength bars
-            if (strength >= 1) {
-                strength1.style.background = '#EF4444';
-                strengthText.textContent = 'Weak password';
-                strengthText.style.color = '#EF4444';
+        async function sendTokenToBackend(user) {
+            const token = await user.getIdToken();
+            try {
+                const response = await fetch('{{ route("auth.firebase") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ id_token: token })
+                });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    window.location.href = data.redirect;
+                } else {
+                    alert('Backend Authentication Failed: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error sending token:', error);
+                alert('System Error. Please try again.');
             }
-            if (strength >= 2) {
-                strength2.style.background = '#F59E0B';
-                strengthText.textContent = 'Fair password';
-                strengthText.style.color = '#F59E0B';
-            }
-            if (strength >= 3) {
-                strength3.style.background = '#10B981';
-                strengthText.textContent = 'Good password';
-                strengthText.style.color = '#10B981';
-            }
-            if (strength >= 4) {
-                strength4.style.background = '#10B981';
-                strengthText.textContent = 'Strong password';
-                strengthText.style.color = '#10B981';
-            }
-
-            if (value.length === 0) {
-                strengthText.textContent = 'Password strength';
-                strengthText.style.color = '';
-            }
-        });
+        }
 
         // Form submission
         const signupForm = document.getElementById('signupForm');
-        signupForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const terms = document.getElementById('terms').checked;
+        if (signupForm) {
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
 
-            // Validate passwords match
-            if (password !== confirmPassword) {
-                alert('Passwords do not match!');
-                return;
-            }
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                const terms = document.getElementById('terms').checked;
 
-            // Validate terms
-            if (!terms) {
-                alert('Please accept the Terms of Service and Privacy Policy');
-                return;
-            }
+                // Validate passwords match
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return;
+                }
 
-            // Show loading animation
-            const submitBtn = signupForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating account...';
-            submitBtn.disabled = true;
+                // Validate terms
+                if (!terms) {
+                    alert('Please accept the Terms of Service and Privacy Policy');
+                    return;
+                }
 
-            // Simulate signup (replace with actual API call)
-            setTimeout(() => {
-                console.log('Signup attempt:', { firstName, lastName, email, phone, password, terms });
-                
-                // Success animation
-                submitBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Account created! Redirecting...';
-                submitBtn.classList.add('bg-green-500');
-                
-                // Redirect to login or dashboard after 1.5 seconds
-                setTimeout(() => {
-                    window.location.href = 'login-page.html';
-                }, 1500);
-            }, 1500);
+                // Show loading animation
+                const submitBtn = signupForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating account...';
+                submitBtn.disabled = true;
+
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+
+                    // Update display name
+                    await updateProfile(user, {
+                        displayName: `${firstName} ${lastName}`.trim()
+                    });
+
+                    // Success animation
+                    submitBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Account created! Redirecting...';
+                    submitBtn.classList.add('bg-green-500');
+
+                    await sendTokenToBackend(user);
+
+                } catch (error) {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert('Signup Failed: ' + errorMessage);
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        // Social Signup
+        const googleBtns = document.querySelectorAll('.fa-google');
+        googleBtns.forEach(btn => {
+            btn.closest('button').addEventListener('click', async () => {
+                const provider = new GoogleAuthProvider();
+                try {
+                    const result = await signInWithPopup(auth, provider);
+                    const user = result.user;
+                    await sendTokenToBackend(user);
+                } catch (error) {
+                    console.error(error);
+                    alert('Google Sign-Up Failed: ' + error.message);
+                }
+            });
+        });
+
+        const facebookBtns = document.querySelectorAll('.fa-facebook');
+        facebookBtns.forEach(btn => {
+            btn.closest('button').addEventListener('click', async () => {
+                const provider = new FacebookAuthProvider();
+                try {
+                    const result = await signInWithPopup(auth, provider);
+                    const user = result.user;
+                    await sendTokenToBackend(user);
+                } catch (error) {
+                    console.error(error);
+                    alert('Facebook Sign-Up Failed: ' + error.message);
+                }
+            });
         });
 
         // Add floating animation to form inputs on focus
         const inputs = document.querySelectorAll('.input-field');
         inputs.forEach(input => {
-            input.addEventListener('focus', function() {
+            input.addEventListener('focus', function () {
                 this.parentElement.classList.add('animate-pulse-glow');
             });
-            
-            input.addEventListener('blur', function() {
+
+            input.addEventListener('blur', function () {
                 this.parentElement.classList.remove('animate-pulse-glow');
             });
         });
 
         // Add particle effect on button hover
         const btnPrimary = document.querySelector('.btn-primary');
-        btnPrimary.addEventListener('mouseenter', function() {
-            this.style.boxShadow = '0 15px 30px rgba(96, 165, 250, 0.5)';
-        });
+        if (btnPrimary) {
+            btnPrimary.addEventListener('mouseenter', function () {
+                this.style.boxShadow = '0 15px 30px rgba(96, 165, 250, 0.5)';
+            });
 
-        btnPrimary.addEventListener('mouseleave', function() {
-            this.style.boxShadow = '';
-        });
+            btnPrimary.addEventListener('mouseleave', function () {
+                this.style.boxShadow = '';
+            });
+        }
     </script>
 
 </body>
+
 </html>
